@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.3.2</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>agenda</groupId>
+	<artifactId>BarberShop</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>BarberShop</name>
+	<description>Agenda para barbearia</description>
+
+	<properties>
+		<java.version>17</java.version>
+		<junit.jupiter.version>5.9.0</junit.jupiter.version>
+	</properties>
+
+	<dependencies>
+		<!-- Spring Boot JPA -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		
+		<!-- Spring Boot Web -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		
+		<!-- MySQL Connector -->
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<version>8.0.33</version>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<!-- Lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.34</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<!-- Spring Boot Validation -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+				
+		<!-- Validation API -->
+		<dependency>
+		    <groupId>javax.validation</groupId>
+		    <artifactId>validation-api</artifactId>
+		    <version>2.0.1.Final</version> 
+		</dependency>
+
+		<!-- Javax EL (Expression Language) -->
+		<dependency>
+	  	 	<groupId>org.glassfish</groupId>
+	   		<artifactId>javax.el</artifactId>
+	  	  	<version>3.0.0</version>
+		</dependency>
+
+		<!-- Spring Boot Test (for testing) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- JUnit Jupiter API -->
+		<dependency>
+		    <groupId>org.junit.jupiter</groupId>
+		    <artifactId>junit-jupiter-api</artifactId>
+		    <version>${junit.jupiter.version}</version>
+		    <scope>test</scope>
+		</dependency>
+		
+		<!-- JUnit Jupiter Engine -->
+		<dependency>
+		    <groupId>org.junit.jupiter</groupId>
+		    <artifactId>junit-jupiter-engine</artifactId>
+		    <version>${junit.jupiter.version}</version>
+		    <scope>test</scope>
+		</dependency>
+		
+	</dependencies>
+
+	<build>
+		<pluginManagement>
+	        <plugins>
+	            <plugin>
+	                <groupId>org.jacoco</groupId>
+	                <artifactId>jacoco-maven-plugin</artifactId>
+	                <version>0.8.8</version>
+	            </plugin>
+	        </plugins>
+    	</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+            	<groupId>org.jacoco</groupId>
+            	<artifactId>jacoco-maven-plugin</artifactId>
+            	<executions>
+	                <execution>
+	                    <goals>
+	                        <goal>prepare-agent</goal>
+	                    </goals>
+	                </execution>
+	                <execution>
+	                    <id>report</id>
+	                    <phase>test</phase>
+	                    <goals>
+	                        <goal>report</goal>
+	                    </goals>
+	                </execution>
+            	</executions>
+        	</plugin>
+        	<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.2.5</version> <!-- ou a versão mais recente -->
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
