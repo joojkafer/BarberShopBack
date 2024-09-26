@@ -1,0 +1,10 @@
+app\controllertest\AgendamentoControllerTest.class
+app\servicetest\AgendamentoServiceTest.class
+app\controllertest\FuncionarioControllerTest.class
+app\controllertest\BarbeiroControllerTest.class
+app\controllertest\ServicoControllerTest.class
+app\servicetest\ClienteServiceTest.class
+app\servicetest\BarbeiroServiceTest.class
+app\servicetest\ServicoServiceTest.class
+app\controllertest\ClienteControllerTest.class
+app\servicetest\FuncionarioServiceTest.class
