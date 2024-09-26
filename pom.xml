@@ -5,15 +5,27 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.2</version>
+		<version>3.3.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>agenda</groupId>
-	<artifactId>BarberShop</artifactId>
+	<groupId>com.example</groupId>
+	<artifactId>demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>BarberShop</name>
-	<description>Agenda para barbearia</description>
-
+	<name>demo</name>
+	<description>Demo project for Spring Boot</description>
+	<url/>
+	<licenses>
+		<license/>
+	</licenses>
+	<developers>
+		<developer/>
+	</developers>
+	<scm>
+		<connection/>
+		<developerConnection/>
+		<tag/>
+		<url/>
+	</scm>
 	<properties>
 		<java.version>17</java.version>
 		<junit.jupiter.version>5.9.0</junit.jupiter.version>
@@ -61,34 +73,12 @@
 		    <version>2.0.1.Final</version> 
 		</dependency>
 
-		<!-- Javax EL (Expression Language) -->
-		<dependency>
-	  	 	<groupId>org.glassfish</groupId>
-	   		<artifactId>javax.el</artifactId>
-	  	  	<version>3.0.0</version>
-		</dependency>
 
 		<!-- Spring Boot Test (for testing) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-		
-		<!-- JUnit Jupiter API -->
-		<dependency>
-		    <groupId>org.junit.jupiter</groupId>
-		    <artifactId>junit-jupiter-api</artifactId>
-		    <version>${junit.jupiter.version}</version>
-		    <scope>test</scope>
-		</dependency>
-		
-		<!-- JUnit Jupiter Engine -->
-		<dependency>
-		    <groupId>org.junit.jupiter</groupId>
-		    <artifactId>junit-jupiter-engine</artifactId>
-		    <version>${junit.jupiter.version}</version>
-		    <scope>test</scope>
 		</dependency>
 		
 	</dependencies>
@@ -143,3 +133,5 @@
 	</build>
 
 </project>
+
+
