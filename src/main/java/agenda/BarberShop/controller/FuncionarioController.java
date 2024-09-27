@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import agenda.BarberShop.entity.Funcionario;
 import agenda.BarberShop.service.FuncionarioService;
+import jakarta.validation.Valid;
 
+
+@Validated
 @RestController
 @RequestMapping("/funcionario")
 public class FuncionarioController {
@@ -25,7 +29,7 @@ public class FuncionarioController {
     private FuncionarioService funcionarioService;
 
     @PostMapping("/save")
-    public ResponseEntity<String> save(@RequestBody Funcionario funcionario) {
+    public ResponseEntity<String> save(@Valid @RequestBody Funcionario funcionario) {
         try {
             String mensagem = funcionarioService.save(funcionario);
             return new ResponseEntity<>(mensagem, HttpStatus.OK);

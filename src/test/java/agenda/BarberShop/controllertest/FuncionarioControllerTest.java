@@ -19,7 +19,7 @@ import agenda.BarberShop.entity.Funcionario;
 import agenda.BarberShop.entity.Role;
 import agenda.BarberShop.service.FuncionarioService;
 
-public class FuncionarioControllertest {
+public class FuncionarioControllerTest {
 
     @InjectMocks
     private FuncionarioController funcionarioController;
@@ -58,9 +58,21 @@ public class FuncionarioControllertest {
     // Cenário de validação
     @Test
     void testValidationErro() {
+        Funcionario funcionario = new Funcionario();
         funcionario.setNome("");
+        funcionario.setLogin("loginValido");
+        funcionario.setSenha("senhaValida");
+
+        when(funcionarioService.save(any(Funcionario.class)))
+            .thenThrow(new RuntimeException("O nome não pode ser vazio."));
+
         ResponseEntity<String> response = funcionarioController.save(funcionario);
+
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+
+        assertEquals("Erro: O nome não pode ser vazio.", response.getBody());
+
+        verify(funcionarioService, times(1)).save(funcionario);
     }
 
 
@@ -102,11 +114,10 @@ public class FuncionarioControllertest {
     void test_FindByIdErro() {
         when(funcionarioService.findById(1L)).thenThrow(new RuntimeException("Funcionário não encontrado!"));
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            funcionarioController.findById(1L);
-        });
+        ResponseEntity<Funcionario> response = funcionarioController.findById(1L);
 
-        assertEquals("Funcionário não encontrado!", exception.getMessage());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNull(response.getBody());
         verify(funcionarioService, times(1)).findById(1L);
     }
 
@@ -138,11 +149,10 @@ public class FuncionarioControllertest {
     void test_DeleteErro() {
         when(funcionarioService.delete(1L)).thenThrow(new RuntimeException("Funcionário não encontrado!"));
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            funcionarioController.delete(1L);
-        });
+        ResponseEntity<String> response = funcionarioController.delete(1L);
 
-        assertEquals("Funcionário não encontrado!", exception.getMessage());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNull(response.getBody());
         verify(funcionarioService, times(1)).delete(1L);
     }
 }

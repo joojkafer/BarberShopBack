@@ -77,7 +77,7 @@ public class AgendamentoControllerTest {
     // Teste da Validation do CPF do Cliente
     @Test
     public void test_ValidationCPFCliente() {
-        cliente.setCpf("12345678900"); // CPF sem formatação
+        cliente.setCpf("12345678900");
         when(agendamentoService.save(any(Agendamento.class))).thenThrow(new IllegalArgumentException("O CPF deve seguir o padrão XXX.XXX.XXX-XX"));
         ResponseEntity<String> response = agendamentoController.save(agendamento);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
@@ -87,7 +87,7 @@ public class AgendamentoControllerTest {
     // Teste da Validation do Telefone do Cliente
     @Test
     public void test_ValidationTelefoneCliente() {
-        cliente.setTelefone("11912345678"); // Telefone sem formatação
+        cliente.setTelefone("11912345678"); 
         when(agendamentoService.save(any(Agendamento.class))).thenThrow(new IllegalArgumentException("O telefone deve seguir o padrão: (XX) XXXX-XXXX ou (XX) XXXXX-XXXX."));
         ResponseEntity<String> response = agendamentoController.save(agendamento);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
@@ -106,7 +106,7 @@ public class AgendamentoControllerTest {
     // Teste do método save com horário inválido (menos de 24 horas)
     @Test
     public void test_SaveHorarioInvalido() {
-        agendamento.setHorariosAgendamento(LocalDateTime.now().plusHours(12)); // Menos de 24 horas
+        agendamento.setHorariosAgendamento(LocalDateTime.now().plusHours(12));
         when(agendamentoService.save(any(Agendamento.class))).thenThrow(new IllegalArgumentException("Agendamentos devem ser feitos com pelo menos 24 horas de antecedência."));
         ResponseEntity<String> response = agendamentoController.save(agendamento);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
@@ -163,7 +163,7 @@ public class AgendamentoControllerTest {
     // Teste do método update com validação inválida (nome do Cliente)
     @Test
     public void test_UpdateValidationNomeClienteInvalido() {
-        cliente.setNome("Cliente"); // Apenas uma palavra
+        cliente.setNome("Cliente");
         when(agendamentoService.update(any(Agendamento.class), anyLong())).thenThrow(new IllegalArgumentException("O nome deve conter pelo menos duas palavras."));
         ResponseEntity<String> response = agendamentoController.update(agendamento, 1L);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());

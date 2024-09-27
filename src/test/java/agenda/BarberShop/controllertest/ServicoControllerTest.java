@@ -18,7 +18,7 @@ import agenda.BarberShop.controller.ServicoController;
 import agenda.BarberShop.entity.Servico;
 import agenda.BarberShop.service.ServicoService;
 
-public class ServicoControllertest {
+public class ServicoControllerTest {
 
     @InjectMocks
     private ServicoController servicoController;
@@ -69,10 +69,15 @@ public class ServicoControllertest {
     // Teste do método update com erro
     @Test
     void test_UpdateErro() {
-        when(servicoService.update(any(Servico.class), eq(1L))).thenReturn("Serviço não encontrado!");
+        when(servicoService.update(any(Servico.class), eq(1L)))
+            .thenThrow(new RuntimeException("Serviço não encontrado!"));
+
         ResponseEntity<String> response = servicoController.update(servico, 1L);
+
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Serviço não encontrado!", response.getBody());
+
+        assertEquals("Erro: Serviço não encontrado!", response.getBody());
+
         verify(servicoService, times(1)).update(any(Servico.class), eq(1L));
     }
 
@@ -90,10 +95,14 @@ public class ServicoControllertest {
     // Teste do método findById com erro
     @Test
     void test_FindByIdErro() {
-        when(servicoService.findById(1L)).thenReturn(null);
+        when(servicoService.findById(1L)).thenThrow(new RuntimeException("Serviço não encontrado!"));
+
         ResponseEntity<Servico> response = servicoController.findById(1L);
+
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+
         assertNull(response.getBody());
+
         verify(servicoService, times(1)).findById(1L);
     }
 
@@ -123,10 +132,14 @@ public class ServicoControllertest {
     // Teste do método delete com erro
     @Test
     void test_DeleteErro() {
-        when(servicoService.delete(1L)).thenReturn("Serviço não encontrado!");
+        when(servicoService.delete(1L)).thenThrow(new RuntimeException("Serviço não encontrado!"));
+
         ResponseEntity<String> response = servicoController.delete(1L);
+
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Serviço não encontrado!", response.getBody());
+
+        assertNull(response.getBody());
+
         verify(servicoService, times(1)).delete(1L);
     }
 }

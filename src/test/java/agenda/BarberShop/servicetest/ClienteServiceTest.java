@@ -18,7 +18,7 @@ import agenda.BarberShop.entity.Cliente;
 import agenda.BarberShop.repository.ClienteRepository;
 import agenda.BarberShop.service.ClienteService;
 
-public class ClienteServicetest {
+public class ClienteServiceTest {
 
     @Mock
     private ClienteRepository clienteRepository;

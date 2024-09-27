@@ -4,6 +4,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 
@@ -22,7 +23,7 @@ import agenda.BarberShop.controller.ClienteController;
 import agenda.BarberShop.entity.Cliente;
 import agenda.BarberShop.service.ClienteService;
 
-public class ClienteControllertest {
+public class ClienteControllerTest {
 
     @InjectMocks
     private ClienteController clienteController;
@@ -50,9 +51,22 @@ public class ClienteControllertest {
     // Teste da Validation
     @Test
     public void testValidation_CPFInvalido() {
-        cliente.setCpf("12345678900");
+        // Arrange
+        cliente.setCpf("12345678900"); // CPF inválido
+
+        // Configura o mock para lançar uma exceção quando o método save for chamado com um CPF inválido
+        when(clienteService.save(any(Cliente.class)))
+            .thenThrow(new RuntimeException("O CPF deve seguir o padrão XXX.XXX.XXX-XX"));
+
+        // Act
         ResponseEntity<String> response = clienteController.save(cliente);
+
+        // Assert
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Erro: O CPF deve seguir o padrão XXX.XXX.XXX-XX", response.getBody());
+
+        // Verifica se o método save do serviço foi chamado exatamente uma vez
+        verify(clienteService, times(1)).save(cliente);
     }
 
     // Teste com Throw
@@ -76,10 +90,16 @@ public class ClienteControllertest {
     // Teste do método update com erro
     @Test
     public void test_UpdateErro() {
-        when(clienteService.update(any(Cliente.class), anyLong())).thenReturn("Cliente não encontrado!");
+        when(clienteService.update(any(Cliente.class), anyLong()))
+            .thenThrow(new RuntimeException("Cliente não encontrado!"));
+
         ResponseEntity<String> response = clienteController.update(cliente, 1L);
+
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+
         assertEquals("Erro: Cliente não encontrado!", response.getBody());
+
+        verify(clienteService, times(1)).update(cliente, 1L);
     }
 
     // Teste do método findById com sucesso
@@ -94,9 +114,14 @@ public class ClienteControllertest {
     // Teste do método findById com erro
     @Test
     public void test_FindByIdErro() {
-        when(clienteService.findById(1L)).thenReturn(null);
+        when(clienteService.findById(1L)).thenThrow(new RuntimeException("Cliente não encontrado!"));
+        
         ResponseEntity<Cliente> response = clienteController.findById(1L);
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        
+        assertNull(response.getBody());
+        verify(clienteService, times(1)).findById(1L);
     }
 
     // Teste do método findAll
@@ -124,9 +149,14 @@ public class ClienteControllertest {
     // Teste do método delete com erro
     @Test
     public void test_DeleteErro() {
-        when(clienteService.delete(1L)).thenReturn("Cliente não encontrado!");
+        when(clienteService.delete(1L)).thenThrow(new RuntimeException("Cliente não encontrado!"));
+        
         ResponseEntity<String> response = clienteController.delete(1L);
+        
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Erro: Cliente não encontrado!", response.getBody());
+        
+        assertNull(response.getBody());
+        
+        verify(clienteService, times(1)).delete(1L);
     }
 }

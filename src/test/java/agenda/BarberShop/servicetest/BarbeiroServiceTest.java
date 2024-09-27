@@ -18,7 +18,7 @@ import agenda.BarberShop.entity.Barbeiro;
 import agenda.BarberShop.repository.BarbeiroRepository;
 import agenda.BarberShop.service.BarbeiroService;
 
-public class BarbeiroServicetest {
+public class BarbeiroServiceTest {
 
     @Mock
     private BarbeiroRepository barbeiroRepository;

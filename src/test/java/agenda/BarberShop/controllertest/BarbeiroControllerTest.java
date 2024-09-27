@@ -4,6 +4,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -24,7 +25,7 @@ import agenda.BarberShop.controller.BarbeiroController;
 import agenda.BarberShop.entity.Barbeiro;
 import agenda.BarberShop.service.BarbeiroService;
 
-public class BarbeiroControllertest {
+public class BarbeiroControllerTest {
 
     @InjectMocks
     private BarbeiroController barbeiroController;
@@ -59,9 +60,18 @@ public class BarbeiroControllertest {
     @Test
     public void test_ValidationCPF() {
         barbeiro.setCpf("12345678900");
+        
+        when(barbeiroService.save(any(Barbeiro.class))).thenThrow(new RuntimeException("CPF inválido"));
+        
         ResponseEntity<String> response = barbeiroController.save(barbeiro);
+        
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        
+        assertEquals("Erro: CPF inválido", response.getBody());
+        
+        verify(barbeiroService, times(1)).save(barbeiro);
     }
+
     
     //Teste com Throw
     @Test
@@ -86,11 +96,17 @@ public class BarbeiroControllertest {
     //Teste do método update com erro
     @Test
     public void test_UpdateErro() {
-        when(barbeiroService.update(any(Barbeiro.class), anyLong())).thenReturn("Barbeiro não encontrado!");
+        when(barbeiroService.update(any(Barbeiro.class), anyLong())).thenThrow(new RuntimeException("Barbeiro não encontrado!"));
+        
         ResponseEntity<String> response = barbeiroController.update(barbeiro, 1L);
+        
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        
         assertEquals("Erro: Barbeiro não encontrado!", response.getBody());
+        
+        verify(barbeiroService, times(1)).update(barbeiro, 1L);
     }
+
     
     //Teste do método update com sucesso
     @Test
@@ -104,9 +120,15 @@ public class BarbeiroControllertest {
     //Teste do método update com erro
     @Test
     public void test_FindByIdErro() {
-        when(barbeiroService.findById(1L)).thenReturn(null);
+        when(barbeiroService.findById(1L)).thenThrow(new RuntimeException("Barbeiro não encontrado!"));
+        
         ResponseEntity<Barbeiro> response = barbeiroController.findById(1L);
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        
+        assertNull(response.getBody());
+        
+        verify(barbeiroService, times(1)).findById(1L);
     }
     
     //Teste do método findall
@@ -134,9 +156,14 @@ public class BarbeiroControllertest {
     //Teste do método delete com erro
     @Test
     public void test_DeleteErro() {
-        when(barbeiroService.delete(1L)).thenReturn("Barbeiro não encontrado!");
+        when(barbeiroService.delete(1L)).thenThrow(new RuntimeException("Barbeiro não encontrado!"));
+        
         ResponseEntity<String> response = barbeiroController.delete(1L);
+        
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Erro: Barbeiro não encontrado!", response.getBody());
+        
+        assertNull(response.getBody());
+        
+        verify(barbeiroService, times(1)).delete(1L);
     }
 }

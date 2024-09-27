@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.List;
 
-public class AgendamentoServicetest {
+public class AgendamentoServiceTest {
 
     @InjectMocks
     private AgendamentoService agendamentoService;
