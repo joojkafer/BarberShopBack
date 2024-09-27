@@ -1,11 +1,10 @@
 package agenda.BarberShop.servicetest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -71,9 +70,11 @@ public class FuncionarioServiceTest {
         // Mockando que o funcionário não foi encontrado
         when(funcionarioRepository.findById(1L)).thenReturn(Optional.empty());
 
-        // Chamando o método e verificando o resultado
-        String resultado = funcionarioService.update(funcionarioMock, 1L);
-        assertEquals("Funcionário não encontrado!", resultado);
+        // Verificando se a exceção é lançada
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            funcionarioService.update(funcionarioMock, 1L);
+        });
+        assertEquals("Funcionário não encontrado!", exception.getMessage());
 
         // Verificando que o método save não foi chamado
         verify(funcionarioRepository, times(0)).save(any(Funcionario.class));
@@ -97,16 +98,15 @@ public class FuncionarioServiceTest {
         // Mockando que o funcionário não foi encontrado
         when(funcionarioRepository.findById(1L)).thenReturn(Optional.empty());
 
-        // Chamando o método e verificando o resultado
-        Funcionario resultado = funcionarioService.findById(1L);
-        assertEquals(null, resultado);
+        // Verificando se a exceção é lançada
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            funcionarioService.findById(1L);
+        });
+        assertEquals("Funcionário não encontrado!", exception.getMessage());
 
         // Verificando se o método findById foi chamado
         verify(funcionarioRepository, times(1)).findById(1L);
     }
-
- 
-   
 
     @Test
     public void testDelete_Sucesso() {
@@ -126,9 +126,11 @@ public class FuncionarioServiceTest {
         // Mockando que o funcionário não foi encontrado
         when(funcionarioRepository.existsById(1L)).thenReturn(false);
 
-        // Chamando o método e verificando o resultado
-        String resultado = funcionarioService.delete(1L);
-        assertEquals("Funcionário não encontrado!", resultado);
+        // Verificando se a exceção é lançada
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            funcionarioService.delete(1L);
+        });
+        assertEquals("Funcionário não encontrado!", exception.getMessage());
 
         // Verificando que o método deleteById não foi chamado
         verify(funcionarioRepository, times(0)).deleteById(1L);

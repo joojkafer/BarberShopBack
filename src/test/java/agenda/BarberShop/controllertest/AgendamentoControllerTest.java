@@ -1,12 +1,7 @@
 package agenda.BarberShop.controllertest;
 
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.times;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,11 +10,11 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -32,7 +27,7 @@ import agenda.BarberShop.entity.Servico;
 import agenda.BarberShop.service.AgendamentoService;
 import agenda.BarberShop.entity.Role;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class AgendamentoControllerTest {
 
     @InjectMocks
@@ -49,7 +44,6 @@ public class AgendamentoControllerTest {
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.openMocks(this);
         cliente = new Cliente(1L, "Cliente Teste", "123.456.789-10", "(11) 91234-5678", new ArrayList<>());
         barbeiro = new Barbeiro(1L, "Barbeiro Teste", "987.654.321-00", true, new ArrayList<>());
         funcionario = new Funcionario(1L, Role.ATENDENTE, "Funcionario Teste", "funcionario", "senha123", new ArrayList<>());
@@ -182,7 +176,7 @@ public class AgendamentoControllerTest {
     // Teste do método findById com erro (agendamento não encontrado)
     @Test
     public void test_FindByIdErro() {
-        when(agendamentoService.findById(1L)).thenReturn(null);
+        when(agendamentoService.findById(1L)).thenThrow(new RuntimeException("Agendamento não encontrado!"));
         ResponseEntity<?> response = agendamentoController.findById(1L);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Erro: Agendamento não encontrado!", response.getBody());

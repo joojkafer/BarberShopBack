@@ -66,13 +66,13 @@ public class BarbeiroController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> delete(@PathVariable long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) {
         try {
-            String mensagem = this.barbeiroService.delete(id);
-            return new ResponseEntity<>(mensagem, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            String message = barbeiroService.delete(id);
+            return ResponseEntity.ok(message);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
         }
     }
 }

@@ -19,6 +19,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AgendamentoServiceTest {
@@ -75,8 +76,14 @@ public class AgendamentoServiceTest {
         Agendamento agendamento = criarAgendamentoMock();
         when(clienteRepository.existsById(agendamento.getCliente().getIdCliente())).thenReturn(false);
 
-        String resultado = agendamentoService.save(agendamento);
-        assertEquals("Erro: Cliente não encontrado!", resultado);
+        // Verificando se a exceção é lançada
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            agendamentoService.save(agendamento);
+        });
+        assertEquals("Erro: Cliente não encontrado!", exception.getMessage());
+
+        // Verificando que o método save não foi chamado
+        verify(agendamentoRepository, times(0)).save(any(Agendamento.class));
     }
 
     @Test
@@ -94,9 +101,11 @@ public class AgendamentoServiceTest {
         // Mockando que não há conflitos de agendamento
         when(agendamentoRepository.existsByBarbeiroAndHorariosAgendamento(any(), any())).thenReturn(false);
 
-        // Chamando o método e verificando o resultado
-        String resultado = agendamentoService.save(agendamento);
-        assertEquals("Erro: Agendamentos devem ser feitos com pelo menos 24 horas de antecedência.", resultado);
+        // Verificando se a exceção é lançada
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            agendamentoService.save(agendamento);
+        });
+        assertEquals("Erro: Agendamentos devem ser feitos com pelo menos 24 horas de antecedência.", exception.getMessage());
     }
 
     @Test
@@ -104,8 +113,11 @@ public class AgendamentoServiceTest {
         Agendamento agendamento = criarAgendamentoMock();
         when(agendamentoRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        String resultado = agendamentoService.update(agendamento, 1L);
-        assertEquals("Agendamento não encontrado!", resultado);
+        // Verificando se a exceção é lançada
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            agendamentoService.update(agendamento, 1L);
+        });
+        assertEquals("Agendamento não encontrado!", exception.getMessage());
     }
 
     @Test
@@ -130,8 +142,11 @@ public class AgendamentoServiceTest {
     public void testDelete_AgendamentoNaoEncontrado() {
         when(agendamentoRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        String resultado = agendamentoService.delete(1L);
-        assertEquals("Agendamento não encontrado!", resultado);
+        // Verificando se a exceção é lançada
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            agendamentoService.delete(1L);
+        });
+        assertEquals("Agendamento não encontrado!", exception.getMessage());
     }
 
     @Test
@@ -140,6 +155,7 @@ public class AgendamentoServiceTest {
         agendamento.setHorariosAgendamento(LocalDateTime.now().plusHours(13));
         when(agendamentoRepository.findById(anyLong())).thenReturn(Optional.of(agendamento));
 
+        // Chamando o método e verificando o resultado
         String resultado = agendamentoService.delete(1L);
         assertEquals("Agendamento deletado com sucesso!", resultado);
         verify(agendamentoRepository, times(1)).deleteById(1L);
@@ -151,15 +167,18 @@ public class AgendamentoServiceTest {
         agendamento.setHorariosAgendamento(LocalDateTime.now().plusHours(11));
         when(agendamentoRepository.findById(anyLong())).thenReturn(Optional.of(agendamento));
 
-        String resultado = agendamentoService.delete(1L);
-        assertEquals("Erro: Cancelamentos de agendamentos devem ser tratados diretamente com a recepção.", resultado);
+        // Verificando se a exceção é lançada
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            agendamentoService.delete(1L);
+        });
+        assertEquals("Erro: Cancelamentos de agendamentos devem ser tratados diretamente com a recepção.", exception.getMessage());
     }
 
     private Agendamento criarAgendamentoMock() {
         Agendamento agendamento = new Agendamento();
-        agendamento.setCliente(new Cliente(0, null, null, null, null));
-        agendamento.setBarbeiro(new Barbeiro(1L, null, null, null, null));
-        agendamento.setFuncionario(new Funcionario(1L, null, null, null, null, null));
+        agendamento.setCliente(new Cliente(1L, "Cliente", "123.456.789-10", "123456789", new ArrayList<>()));
+        agendamento.setBarbeiro(new Barbeiro(1L, "Barbeiro", "987.654.321-00", true, new ArrayList<>()));
+        agendamento.setFuncionario(new Funcionario(1L, null, "Funcionario", "login", "senha", null));
         agendamento.setHorariosAgendamento(LocalDateTime.now().plusHours(25));
         agendamento.setServicos(List.of(new Servico(1L, "Corte", null, 30.0)));
         return agendamento;

@@ -41,38 +41,36 @@ public class AgendamentoService {
     @Transactional
     public String save(Agendamento agendamento) {
         if (!clienteRepository.existsById(agendamento.getCliente().getIdCliente())) {
-            return "Erro: Cliente não encontrado!";
+            throw new RuntimeException("Erro: Cliente não encontrado!");
         }
         if (!barbeiroRepository.existsById(agendamento.getBarbeiro().getIdBarbeiro())) {
-            return "Erro: Barbeiro não encontrado!";
+            throw new RuntimeException("Erro: Barbeiro não encontrado!");
         }
         if (!funcionarioRepository.existsById(agendamento.getFuncionario().getIdUsuario())) {
-            return "Erro: Funcionário não encontrado!";
+            throw new RuntimeException("Erro: Funcionário não encontrado!");
         }
 
         for (Servico servico : agendamento.getServicos()) {
             if (!servicoRepository.existsById(servico.getIdServico())) {
-                return "Erro: Serviço não encontrado!";
+                throw new RuntimeException("Erro: Serviço não encontrado!");
             }
         }
 
         if (agendamento.getHorariosAgendamento().isBefore(LocalDateTime.now().plusHours(24))) {
-            return "Erro: Agendamentos devem ser feitos com pelo menos 24 horas de antecedência.";
+            throw new RuntimeException("Erro: Agendamentos devem ser feitos com pelo menos 24 horas de antecedência.");
         }
 
-  
         boolean existeConflito = agendamentoRepository.existsByBarbeiroAndHorariosAgendamento(
             agendamento.getBarbeiro(),
             agendamento.getHorariosAgendamento()
         );
         if (existeConflito) {
-            return "Erro: Já existe um agendamento para este barbeiro neste horário.";
+            throw new RuntimeException("Erro: Já existe um agendamento para este barbeiro neste horário.");
         }
-
 
         calcularValorTotal(agendamento);
 
-        Agendamento savedAgendamento = agendamentoRepository.save(agendamento);
+        agendamentoRepository.save(agendamento);
 
         return "Agendamento salvo com sucesso!";
     }
@@ -92,12 +90,13 @@ public class AgendamentoService {
             agendamentoRepository.save(existingAgendamento);
             return "Agendamento atualizado com sucesso!";
         } else {
-            return "Agendamento não encontrado!";
+            throw new RuntimeException("Agendamento não encontrado!");
         }
     }
 
     public Agendamento findById(long id) {
-        return agendamentoRepository.findById(id).orElse(null);
+        return agendamentoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Agendamento não encontrado!"));
     }
 
     public List<Agendamento> findAll(LocalDateTime dataInicio, LocalDateTime dataFim, Long idBarbeiro, Long idFuncionario) {
@@ -109,28 +108,27 @@ public class AgendamentoService {
         if (agendamentoOptional.isPresent()) {
             Agendamento agendamento = agendamentoOptional.get();
 
-           
             if (agendamento.getHorariosAgendamento().isBefore(LocalDateTime.now().plusHours(12))) {
-                return "Erro: Cancelamentos de agendamentos devem ser tratados diretamente com a recepção.";
+                throw new RuntimeException("Erro: Cancelamentos de agendamentos devem ser tratados diretamente com a recepção.");
             }
 
             agendamentoRepository.deleteById(id);
             return "Agendamento deletado com sucesso!";
         } else {
-            return "Agendamento não encontrado!";
+            throw new RuntimeException("Agendamento não encontrado!");
         }
     }
 
     private void calcularValorTotal(Agendamento agendamento) {
         List<Servico> servicosCompletos = agendamento.getServicos().stream()
             .map(servico -> servicoRepository.findById(servico.getIdServico())
-                                             .orElseThrow(() -> new IllegalArgumentException("Serviço com ID " + servico.getIdServico() + " não encontrado")))
+                                             .orElseThrow(() -> new RuntimeException("Serviço com ID " + servico.getIdServico() + " não encontrado")))
             .collect(Collectors.toList());
 
         servicosCompletos.forEach(servico -> {
             logger.info("Serviço ID: " + servico.getIdServico() + ", Nome: " + servico.getNome() + ", Valor: " + servico.getValor());
             if (servico.getValor() == null) {
-                throw new IllegalArgumentException("O valor do serviço não pode ser nulo.");
+                throw new RuntimeException("O valor do serviço não pode ser nulo.");
             }
         });
 

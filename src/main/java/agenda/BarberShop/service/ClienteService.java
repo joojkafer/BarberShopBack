@@ -27,12 +27,13 @@ public class ClienteService {
             clienteRepository.save(cliente);
             return "Cliente atualizado com sucesso!";
         } else {
-            return "Cliente não encontrado!";
+            throw new RuntimeException("Cliente não encontrado!");
         }
     }
 
     public Cliente findById(long id) {
-        return clienteRepository.findById(id).orElse(null);
+        return clienteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado!"));
     }
 
     public List<Cliente> findAll() {
@@ -44,7 +45,7 @@ public class ClienteService {
             clienteRepository.deleteById(id);
             return "Cliente deletado com sucesso!";
         } else {
-            return "Cliente não encontrado!";
+            throw new RuntimeException("Cliente não encontrado!");
         }
     }
 }

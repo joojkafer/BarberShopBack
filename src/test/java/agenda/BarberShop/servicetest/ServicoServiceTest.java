@@ -1,6 +1,7 @@
 package agenda.BarberShop.servicetest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -38,115 +39,101 @@ public class ServicoServiceTest {
     }
 
     @Test
-    public void testSave_Sucesso() {
-        // Mockando o salvamento do serviço
+    public void testSave_Sucesso() throws Exception {
         when(servicoRepository.save(any(Servico.class))).thenReturn(servicoMock);
-
-        // Chamando o método e verificando o resultado
         String resultado = servicoService.save(servicoMock);
         assertEquals("Serviço salvo com sucesso!", resultado);
-
-        // Verificando se o método save foi chamado
         verify(servicoRepository, times(1)).save(servicoMock);
     }
 
     @Test
-    public void testUpdate_Sucesso() {
-        // Mockando a busca do serviço existente
-        when(servicoRepository.findById(1L)).thenReturn(Optional.of(servicoMock));
+    public void testSave_Falha_NomeServicoNulo() throws Exception {
+        Servico servicoInvalido = new Servico();
+        servicoInvalido.setIdServico(2L);
+        servicoInvalido.setNome(null);
+        servicoInvalido.setValor(30.0);
 
-        // Mockando o salvamento após a atualização
-        when(servicoRepository.save(any(Servico.class))).thenReturn(servicoMock);
+        Exception exception = assertThrows(Exception.class, () -> {
+            servicoService.save(servicoInvalido);
+        });
+        assertEquals("O nome do serviço não pode ser nulo.", exception.getMessage());
 
-        // Chamando o método e verificando o resultado
-        String resultado = servicoService.update(servicoMock, 1L);
-        assertEquals("Serviço atualizado com sucesso!", resultado);
-
-        // Verificando se o método save foi chamado
-        verify(servicoRepository, times(1)).save(servicoMock);
-    }
-
-    @Test
-    public void testUpdate_Falha_ServicoNaoEncontrado() {
-        // Mockando que o serviço não foi encontrado
-        when(servicoRepository.findById(1L)).thenReturn(Optional.empty());
-
-        // Chamando o método e verificando o resultado
-        String resultado = servicoService.update(servicoMock, 1L);
-        assertEquals("Serviço não encontrado!", resultado);
-
-        // Verificando que o método save não foi chamado
         verify(servicoRepository, times(0)).save(any(Servico.class));
     }
 
     @Test
-    public void testFindById_Sucesso() {
-        // Mockando a busca do serviço por ID
+    public void testUpdate_Sucesso() throws Exception {
         when(servicoRepository.findById(1L)).thenReturn(Optional.of(servicoMock));
-
-        // Chamando o método e verificando o resultado
-        Servico resultado = servicoService.findById(1L);
-        assertEquals(servicoMock, resultado);
-
-        // Verificando se o método findById foi chamado
-        verify(servicoRepository, times(1)).findById(1L);
+        when(servicoRepository.save(any(Servico.class))).thenReturn(servicoMock);
+        String resultado = servicoService.update(servicoMock, 1L);
+        assertEquals("Serviço atualizado com sucesso!", resultado);
+        verify(servicoRepository, times(1)).save(servicoMock);
     }
 
     @Test
-    public void testFindById_Falha_ServicoNaoEncontrado() {
-        // Mockando que o serviço não foi encontrado
+    public void testUpdate_Falha_ServicoNaoEncontrado() throws Exception {
         when(servicoRepository.findById(1L)).thenReturn(Optional.empty());
 
-        // Chamando o método e verificando o resultado
-        Servico resultado = servicoService.findById(1L);
-        assertEquals(null, resultado);
+        Exception exception = assertThrows(Exception.class, () -> {
+            servicoService.update(servicoMock, 1L);
+        });
+        assertEquals("Serviço não encontrado!", exception.getMessage());
 
-        // Verificando se o método findById foi chamado
+        verify(servicoRepository, times(0)).save(any(Servico.class));
+    }
+
+    @Test
+    public void testFindById_Sucesso() throws Exception {
+        when(servicoRepository.findById(1L)).thenReturn(Optional.of(servicoMock));
+        Servico resultado = servicoService.findById(1L);
+        assertEquals(servicoMock, resultado);
         verify(servicoRepository, times(1)).findById(1L);
     }
 
     @Test
-    public void testFindAll_Sucesso() {
-        // Mockando a busca de todos os serviços
+    public void testFindById_Falha_ServicoNaoEncontrado() throws Exception {
+        when(servicoRepository.findById(1L)).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(Exception.class, () -> {
+            servicoService.findById(1L);
+        });
+        assertEquals("Serviço não encontrado!", exception.getMessage());
+
+        verify(servicoRepository, times(1)).findById(1L);
+    }
+
+    @Test
+    public void testFindAll_Sucesso() throws Exception {
         Servico servico2 = new Servico();
         servico2.setIdServico(2L);
         servico2.setNome("Barba");
         servico2.setValor(30.0);
         List<Servico> servicos = Arrays.asList(servicoMock, servico2);
-
         when(servicoRepository.findAll()).thenReturn(servicos);
-
-        // Chamando o método e verificando o resultado
         List<Servico> resultado = servicoService.findAll();
         assertEquals(servicos, resultado);
-
-        // Verificando se o método findAll foi chamado
         verify(servicoRepository, times(1)).findAll();
     }
 
     @Test
-    public void testDelete_Sucesso() {
-        // Mockando a existência do serviço
+    public void testDelete_Sucesso() throws Exception {
         when(servicoRepository.existsById(1L)).thenReturn(true);
 
-        // Chamando o método e verificando o resultado
         String resultado = servicoService.delete(1L);
         assertEquals("Serviço deletado com sucesso!", resultado);
 
-        // Verificando se o método deleteById foi chamado
         verify(servicoRepository, times(1)).deleteById(1L);
     }
 
     @Test
-    public void testDelete_Falha_ServicoNaoEncontrado() {
-        // Mockando que o serviço não foi encontrado
+    public void testDelete_Falha_ServicoNaoEncontrado() throws Exception {
         when(servicoRepository.existsById(1L)).thenReturn(false);
 
-        // Chamando o método e verificando o resultado
-        String resultado = servicoService.delete(1L);
-        assertEquals("Serviço não encontrado!", resultado);
+        Exception exception = assertThrows(Exception.class, () -> {
+            servicoService.delete(1L);
+        });
+        assertEquals("Serviço não encontrado!", exception.getMessage());
 
-        // Verificando que o método deleteById não foi chamado
         verify(servicoRepository, times(0)).deleteById(1L);
     }
 }

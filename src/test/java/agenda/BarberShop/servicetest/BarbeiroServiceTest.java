@@ -1,6 +1,7 @@
 package agenda.BarberShop.servicetest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -73,9 +74,11 @@ public class BarbeiroServiceTest {
         // Mockando que o barbeiro não foi encontrado
         when(barbeiroRepository.findById(1L)).thenReturn(Optional.empty());
 
-        // Chamando o método e verificando o resultado
-        String resultado = barbeiroService.update(barbeiroMock, 1L);
-        assertEquals("Barbeiro não encontrado!", resultado);
+        // Verificando se a exceção é lançada
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            barbeiroService.update(barbeiroMock, 1L);
+        });
+        assertEquals("Barbeiro não encontrado!", exception.getMessage());
 
         // Verificando que o método save não foi chamado
         verify(barbeiroRepository, times(0)).save(any(Barbeiro.class));
@@ -99,9 +102,11 @@ public class BarbeiroServiceTest {
         // Mockando que o barbeiro não foi encontrado
         when(barbeiroRepository.findById(1L)).thenReturn(Optional.empty());
 
-        // Chamando o método e verificando o resultado
-        Barbeiro resultado = barbeiroService.findById(1L);
-        assertEquals(null, resultado);
+        // Verificando se a exceção é lançada
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            barbeiroService.findById(1L);
+        });
+        assertEquals("Barbeiro não encontrado!", exception.getMessage());
 
         // Verificando se o método findById foi chamado
         verify(barbeiroRepository, times(1)).findById(1L);
@@ -143,9 +148,11 @@ public class BarbeiroServiceTest {
         // Mockando que o barbeiro não foi encontrado
         when(barbeiroRepository.existsById(1L)).thenReturn(false);
 
-        // Chamando o método e verificando o resultado
-        String resultado = barbeiroService.delete(1L);
-        assertEquals("Barbeiro não encontrado!", resultado);
+        // Verificando se a exceção é lançada
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            barbeiroService.delete(1L);
+        });
+        assertEquals("Barbeiro não encontrado!", exception.getMessage());
 
         // Verificando que o método deleteById não foi chamado
         verify(barbeiroRepository, times(0)).deleteById(1L);

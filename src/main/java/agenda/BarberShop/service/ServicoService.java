@@ -15,36 +15,40 @@ public class ServicoService {
     @Autowired
     private ServicoRepository servicoRepository;
 
-    public String save(Servico servico) {
+    public String save(Servico servico) throws Exception {
+        if (servico.getNome() == null || servico.getNome().isEmpty()) {
+            throw new Exception("O nome do serviço não pode ser nulo.");
+        }
         servicoRepository.save(servico);
         return "Serviço salvo com sucesso!";
     }
 
-    public String update(Servico servico, long id) {
+    public String update(Servico servico, long id) throws Exception {
         Optional<Servico> optionalServico = servicoRepository.findById(id);
         if (optionalServico.isPresent()) {
             servico.setIdServico(id);
             servicoRepository.save(servico);
             return "Serviço atualizado com sucesso!";
         } else {
-            return "Serviço não encontrado!";
+            throw new Exception("Serviço não encontrado!");
         }
     }
 
-    public Servico findById(long id) {
-        return servicoRepository.findById(id).orElse(null);
+    public Servico findById(long id) throws Exception {
+        return servicoRepository.findById(id)
+                .orElseThrow(() -> new Exception("Serviço não encontrado!"));
     }
 
-    public List<Servico> findAll() {
+    public List<Servico> findAll() throws Exception {
         return servicoRepository.findAll();
     }
 
-    public String delete(long id) {
+    public String delete(long id) throws Exception {
         if (servicoRepository.existsById(id)) {
             servicoRepository.deleteById(id);
             return "Serviço deletado com sucesso!";
         } else {
-            return "Serviço não encontrado!";
+            throw new Exception("Serviço não encontrado!");
         }
     }
 }

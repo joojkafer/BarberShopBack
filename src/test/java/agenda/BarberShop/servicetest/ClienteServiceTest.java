@@ -1,6 +1,7 @@
 package agenda.BarberShop.servicetest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -72,9 +73,11 @@ public class ClienteServiceTest {
         // Mockando que o cliente não foi encontrado
         when(clienteRepository.findById(1L)).thenReturn(Optional.empty());
 
-        // Chamando o método e verificando o resultado
-        String resultado = clienteService.update(clienteMock, 1L);
-        assertEquals("Cliente não encontrado!", resultado);
+        // Verificando se a exceção é lançada
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            clienteService.update(clienteMock, 1L);
+        });
+        assertEquals("Cliente não encontrado!", exception.getMessage());
 
         // Verificando que o método save não foi chamado
         verify(clienteRepository, times(0)).save(any(Cliente.class));
@@ -98,9 +101,11 @@ public class ClienteServiceTest {
         // Mockando que o cliente não foi encontrado
         when(clienteRepository.findById(1L)).thenReturn(Optional.empty());
 
-        // Chamando o método e verificando o resultado
-        Cliente resultado = clienteService.findById(1L);
-        assertEquals(null, resultado);
+        // Verificando se a exceção é lançada
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            clienteService.findById(1L);
+        });
+        assertEquals("Cliente não encontrado!", exception.getMessage());
 
         // Verificando se o método findById foi chamado
         verify(clienteRepository, times(1)).findById(1L);
@@ -142,9 +147,11 @@ public class ClienteServiceTest {
         // Mockando que o cliente não foi encontrado
         when(clienteRepository.existsById(1L)).thenReturn(false);
 
-        // Chamando o método e verificando o resultado
-        String resultado = clienteService.delete(1L);
-        assertEquals("Cliente não encontrado!", resultado);
+        // Verificando se a exceção é lançada
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            clienteService.delete(1L);
+        });
+        assertEquals("Cliente não encontrado!", exception.getMessage());
 
         // Verificando que o método deleteById não foi chamado
         verify(clienteRepository, times(0)).deleteById(1L);

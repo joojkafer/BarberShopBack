@@ -32,23 +32,23 @@ public class BarbeiroService {
             barbeiroRepository.save(existingBarbeiro);
             return "Barbeiro atualizado com sucesso!";
         }
-            return "Barbeiro não encontrado!";
+        throw new RuntimeException("Barbeiro não encontrado!");
     }
 
     public Barbeiro findById(long id) {
-        return barbeiroRepository.findById(id).orElse(null);
+        return barbeiroRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Barbeiro não encontrado!"));
     }
 
     public List<Barbeiro> findAll() {
         return barbeiroRepository.findAll();
     }
 
-    public String delete(long id) {
-        if (barbeiroRepository.existsById(id)) {
-            barbeiroRepository.deleteById(id);
-            return "Barbeiro deletado com sucesso!";
-        } else {
-            return "Barbeiro não encontrado!";
+    public String delete(Long id) {
+        if (!barbeiroRepository.existsById(id)) {
+            throw new RuntimeException("Barbeiro não encontrado!");
         }
+        barbeiroRepository.deleteById(id);
+        return "Barbeiro deletado com sucesso!";
     }
 }

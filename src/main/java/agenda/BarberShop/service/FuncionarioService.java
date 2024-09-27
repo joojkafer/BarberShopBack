@@ -27,17 +27,16 @@ public class FuncionarioService {
             existingFuncionario.setNome(funcionario.getNome());
             existingFuncionario.setLogin(funcionario.getLogin());
             existingFuncionario.setRole(funcionario.getRole());
-            //existingFuncionario.setSenha(funcionario.getSenha());
-
             funcionarioRepository.save(existingFuncionario);
             return "Funcionário atualizado com sucesso!";
         } else {
-            return "Funcionário não encontrado!";
+            throw new RuntimeException("Funcionário não encontrado!");
         }
     }
 
     public Funcionario findById(long id) {
-        return funcionarioRepository.findById(id).orElse(null);
+        return funcionarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado!"));
     }
 
     public List<Funcionario> findAll() {
@@ -49,7 +48,7 @@ public class FuncionarioService {
             funcionarioRepository.deleteById(id);
             return "Funcionário deletado com sucesso!";
         } else {
-            return "Funcionário não encontrado!";
+            throw new RuntimeException("Funcionário não encontrado!");
         }
     }
 }
