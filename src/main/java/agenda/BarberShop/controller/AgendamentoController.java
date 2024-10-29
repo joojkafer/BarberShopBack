@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 
 @Validated
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/agendamento")
 public class AgendamentoController {
 
