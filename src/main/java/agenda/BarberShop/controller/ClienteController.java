@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import agenda.BarberShop.entity.Cliente;
 import agenda.BarberShop.service.ClienteService;
 
-
 @Validated
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -75,7 +74,7 @@ public class ClienteController {
             String mensagem = clienteService.delete(id);
             return new ResponseEntity<>(mensagem, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Erro: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }
