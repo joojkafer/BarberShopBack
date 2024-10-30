@@ -40,22 +40,8 @@ public class AgendamentoService {
 
     @Transactional
     public String save(Agendamento agendamento) {
-        if (!clienteRepository.existsById(agendamento.getCliente().getIdCliente())) {
-            throw new RuntimeException("Erro: Cliente não encontrado!");
-        }
-        if (!barbeiroRepository.existsById(agendamento.getBarbeiro().getIdBarbeiro())) {
-            throw new RuntimeException("Erro: Barbeiro não encontrado!");
-        }
-        if (!funcionarioRepository.existsById(agendamento.getFuncionario().getIdUsuario())) {
-            throw new RuntimeException("Erro: Funcionário não encontrado!");
-        }
-
-        for (Servico servico : agendamento.getServicos()) {
-            if (!servicoRepository.existsById(servico.getIdServico())) {
-                throw new RuntimeException("Erro: Serviço não encontrado!");
-            }
-        }
-
+        validarEntidadesRelacionadas(agendamento);
+        
         if (agendamento.getHorariosAgendamento().isBefore(LocalDateTime.now().plusHours(24))) {
             throw new RuntimeException("Erro: Agendamentos devem ser feitos com pelo menos 24 horas de antecedência.");
         }
@@ -69,7 +55,6 @@ public class AgendamentoService {
         }
 
         calcularValorTotal(agendamento);
-
         agendamentoRepository.save(agendamento);
 
         return "Agendamento salvo com sucesso!";
@@ -86,7 +71,6 @@ public class AgendamentoService {
             existingAgendamento.setServicos(agendamento.getServicos());
 
             calcularValorTotal(existingAgendamento);
-
             agendamentoRepository.save(existingAgendamento);
             return "Agendamento atualizado com sucesso!";
         } else {
@@ -107,11 +91,9 @@ public class AgendamentoService {
         Optional<Agendamento> agendamentoOptional = agendamentoRepository.findById(id);
         if (agendamentoOptional.isPresent()) {
             Agendamento agendamento = agendamentoOptional.get();
-
             if (agendamento.getHorariosAgendamento().isBefore(LocalDateTime.now().plusHours(12))) {
-                throw new RuntimeException("Erro: Cancelamentos de agendamentos devem ser tratados diretamente com a recepção.");
+                throw new RuntimeException("Cancelamentos de agendamentos devem ser tratados diretamente com a recepção.");
             }
-
             agendamentoRepository.deleteById(id);
             return "Agendamento deletado com sucesso!";
         } else {
@@ -125,17 +107,27 @@ public class AgendamentoService {
                                              .orElseThrow(() -> new RuntimeException("Serviço com ID " + servico.getIdServico() + " não encontrado")))
             .collect(Collectors.toList());
 
-        servicosCompletos.forEach(servico -> {
-            logger.info("Serviço ID: " + servico.getIdServico() + ", Nome: " + servico.getNome() + ", Valor: " + servico.getValor());
-            if (servico.getValor() == null) {
-                throw new RuntimeException("O valor do serviço não pode ser nulo.");
-            }
-        });
-
         double valorTotal = servicosCompletos.stream()
             .mapToDouble(Servico::getValor)
             .sum();
 
         agendamento.setValorTotal(valorTotal);
+    }
+
+    private void validarEntidadesRelacionadas(Agendamento agendamento) {
+        if (!clienteRepository.existsById(agendamento.getCliente().getIdCliente())) {
+            throw new RuntimeException("Erro: Cliente não encontrado!");
+        }
+        if (!barbeiroRepository.existsById(agendamento.getBarbeiro().getIdBarbeiro())) {
+            throw new RuntimeException("Erro: Barbeiro não encontrado!");
+        }
+        if (!funcionarioRepository.existsById(agendamento.getFuncionario().getIdUsuario())) {
+            throw new RuntimeException("Erro: Funcionário não encontrado!");
+        }
+        for (Servico servico : agendamento.getServicos()) {
+            if (!servicoRepository.existsById(servico.getIdServico())) {
+                throw new RuntimeException("Erro: Serviço não encontrado!");
+            }
+        }
     }
 }

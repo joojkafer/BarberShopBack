@@ -18,63 +18,59 @@ import org.springframework.web.bind.annotation.RestController;
 
 import agenda.BarberShop.entity.Barbeiro;
 import agenda.BarberShop.service.BarbeiroService;
+import jakarta.validation.Valid;
 
 @Validated
 @RestController
+@RequestMapping("/api/barbeiro")
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/barbeiro")
 public class BarbeiroController {
-	
-	@Autowired
+
+    @Autowired
     private BarbeiroService barbeiroService;
 
-    @PostMapping("/save")
-    public ResponseEntity<String> save(@RequestBody Barbeiro barbeiro) {
-        try {
-            String mensagem = this.barbeiroService.save(barbeiro);
-            return new ResponseEntity<>(mensagem, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Erro: " + e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @PutMapping("/update/{id}")
-    public ResponseEntity<String> update(@RequestBody Barbeiro barbeiro, @PathVariable long id) {
-        try {
-            String mensagem = this.barbeiroService.update(barbeiro, id);
-            return new ResponseEntity<>(mensagem, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Erro: " + e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+    @GetMapping("/findAll")
+    public ResponseEntity<List<Barbeiro>> findAll() {
+        List<Barbeiro> barbeiros = barbeiroService.findAll();
+        return new ResponseEntity<>(barbeiros, HttpStatus.OK);
     }
 
     @GetMapping("/findById/{id}")
     public ResponseEntity<Barbeiro> findById(@PathVariable long id) {
+        Barbeiro barbeiro = barbeiroService.findById(id);
+        return new ResponseEntity<>(barbeiro, HttpStatus.OK);
+    }
+
+    @PostMapping("/save")
+    public ResponseEntity<String> save(@RequestBody Barbeiro barbeiro) {
         try {
-        	Barbeiro barbeiro = this.barbeiroService.findById(id);
-            return new ResponseEntity<>(barbeiro, HttpStatus.OK);
+            String mensagem = barbeiroService.save(barbeiro);
+            return new ResponseEntity<>(mensagem, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            // Log da exceção completa para investigar a causa do erro
+            e.printStackTrace();
+            return new ResponseEntity<>("Erro: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    @GetMapping("/findAll")
-    public ResponseEntity<List<Barbeiro>> findAll() {
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> update(@Valid @RequestBody Barbeiro barbeiro, @PathVariable long id) {
         try {
-            List<Barbeiro> lista = this.barbeiroService.findAll();
-            return new ResponseEntity<>(lista, HttpStatus.OK);
+            String mensagem = barbeiroService.update(barbeiro, id);
+            return new ResponseEntity<>(mensagem, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Erro: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id) {
+    public ResponseEntity<String> delete(@PathVariable long id) {
         try {
-            String message = barbeiroService.delete(id);
-            return ResponseEntity.ok(message);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body("Erro: " + e.getMessage());
+            String mensagem = barbeiroService.delete(id);
+            return new ResponseEntity<>(mensagem, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Erro: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

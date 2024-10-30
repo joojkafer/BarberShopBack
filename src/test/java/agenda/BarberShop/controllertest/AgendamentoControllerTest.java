@@ -45,7 +45,6 @@ public class AgendamentoControllerTest {
     @BeforeEach
     public void setup() {
         cliente = new Cliente(1L, "Cliente Teste", "123.456.789-10", "(11) 91234-5678", new ArrayList<>());
-        barbeiro = new Barbeiro(1L, "Barbeiro Teste", "987.654.321-00", true, new ArrayList<>());
         funcionario = new Funcionario(1L, Role.ATENDENTE, "Funcionario Teste", "funcionario", "senha123", new ArrayList<>());
         servico = new Servico(1L, "Corte de Cabelo", "Corte padrão", 50.0);
 

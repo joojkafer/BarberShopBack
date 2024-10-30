@@ -1,7 +1,6 @@
 package agenda.BarberShop.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,24 +14,8 @@ public class BarbeiroService {
     @Autowired
     private BarbeiroRepository barbeiroRepository;
 
-    public String save(Barbeiro barbeiro) {
-        barbeiroRepository.save(barbeiro);
-        return "Barbeiro salvo com sucesso!";
-    }
-
-    public String update(Barbeiro barbeiro, long id) {
-        Optional<Barbeiro> optionalBarbeiro = barbeiroRepository.findById(id);
-        if (optionalBarbeiro.isPresent()) {
-            Barbeiro existingBarbeiro = optionalBarbeiro.get();
-            existingBarbeiro.setNome(barbeiro.getNome());
-            existingBarbeiro.setCpf(barbeiro.getCpf());
-            existingBarbeiro.setStatus(barbeiro.getStatus());
-            existingBarbeiro.setAgendamentos(barbeiro.getAgendamentos());
-
-            barbeiroRepository.save(existingBarbeiro);
-            return "Barbeiro atualizado com sucesso!";
-        }
-        throw new RuntimeException("Barbeiro não encontrado!");
+    public List<Barbeiro> findAll() {
+        return barbeiroRepository.findAll();
     }
 
     public Barbeiro findById(long id) {
@@ -40,15 +23,23 @@ public class BarbeiroService {
                 .orElseThrow(() -> new RuntimeException("Barbeiro não encontrado!"));
     }
 
-    public List<Barbeiro> findAll() {
-        return barbeiroRepository.findAll();
+    public String save(Barbeiro barbeiro) {
+        barbeiroRepository.save(barbeiro);
+        return "Barbeiro cadastrado com sucesso!";
     }
 
-    public String delete(Long id) {
-        if (!barbeiroRepository.existsById(id)) {
-            throw new RuntimeException("Barbeiro não encontrado!");
-        }
-        barbeiroRepository.deleteById(id);
+    public String update(Barbeiro barbeiro, long id) {
+        Barbeiro existingBarbeiro = findById(id);
+        existingBarbeiro.setNome(barbeiro.getNome());
+        existingBarbeiro.setCpf(barbeiro.getCpf());
+        existingBarbeiro.setStatus(barbeiro.getStatus());
+        barbeiroRepository.save(existingBarbeiro);
+        return "Barbeiro atualizado com sucesso!";
+    }
+
+    public String delete(long id) {
+        Barbeiro barbeiro = findById(id);
+        barbeiroRepository.delete(barbeiro);
         return "Barbeiro deletado com sucesso!";
     }
 }

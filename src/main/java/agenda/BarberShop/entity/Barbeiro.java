@@ -20,6 +20,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+//src/main/java/agenda/BarberShop/entity/Barbeiro.java
+
+//src/main/java/agenda/BarberShop/entity/Barbeiro.java
+
 @Entity
 @Getter
 @Setter
@@ -27,21 +31,22 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Barbeiro {
 
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long idBarbeiro;
+ @Id
+ @GeneratedValue(strategy = GenerationType.IDENTITY)
+ private long idBarbeiro;
 
-	@NotBlank(message = "O nome não pode ser vazio.")
-    @Pattern(regexp = "^[\\p{L}]+(?:\\s+[\\p{L}]+)+$", message = "O nome deve conter pelo menos duas palavras.")
-	private String nome;
+ @NotBlank(message = "O nome não pode ser vazio.")
+ @Pattern(regexp = "^[\\p{L}]+(?:\\s+[\\p{L}]+)+$", message = "O nome deve conter pelo menos duas palavras.")
+ private String nome;
 
-	@CPF (message = "O CPF deve seguir o padrão XXX.XXX.XXX-XX")
-	private String cpf;
+ @CPF(message = "O CPF deve seguir o padrão XXX.XXX.XXX-XX")
+ private String cpf;
 
-	@NotNull (message = "O status não pode ser nulo.")
-	private Boolean status;
+ @NotNull(message = "O status não pode ser nulo.")
+ private Boolean status;
 
-	@OneToMany(mappedBy = "barbeiro")
-	@JsonIgnoreProperties("barbeiro")
-	private List<Agendamento> agendamentos;
+ // Remova ou comente os campos relacionados a Agendamento
+ // @OneToMany(mappedBy = "barbeiro")
+ // @JsonIgnoreProperties("barbeiro")
+ // private List<Agendamento> agendamentos;
 }

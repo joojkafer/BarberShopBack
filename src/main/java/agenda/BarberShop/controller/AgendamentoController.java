@@ -28,7 +28,7 @@ public class AgendamentoController {
             String mensagem = agendamentoService.save(agendamento);
             return new ResponseEntity<>(mensagem, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>("Erro: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -38,7 +38,7 @@ public class AgendamentoController {
             String mensagem = agendamentoService.update(agendamento, id);
             return new ResponseEntity<>(mensagem, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>("Erro: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -46,12 +46,9 @@ public class AgendamentoController {
     public ResponseEntity<?> findById(@PathVariable long id) {
         try {
             Agendamento agendamento = agendamentoService.findById(id);
-            if (agendamento == null) {
-                return new ResponseEntity<>("Erro: Agendamento não encontrado!", HttpStatus.BAD_REQUEST);
-            }
-            return new ResponseEntity<>(agendamento, HttpStatus.OK);
+            return ResponseEntity.ok(agendamento);
         } catch (Exception e) {
-            return new ResponseEntity<>("Erro: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -63,9 +60,9 @@ public class AgendamentoController {
             @RequestParam(required = false) Long idFuncionario) {
         try {
             List<Agendamento> lista = agendamentoService.findAll(dataInicio, dataFim, idBarbeiro, idFuncionario);
-            return new ResponseEntity<>(lista, HttpStatus.OK);
+            return ResponseEntity.ok(lista);
         } catch (Exception e) {
-            return new ResponseEntity<>("Erro: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -73,9 +70,9 @@ public class AgendamentoController {
     public ResponseEntity<String> delete(@PathVariable long id) {
         try {
             String mensagem = agendamentoService.delete(id);
-            return new ResponseEntity<>(mensagem, HttpStatus.OK);
+            return ResponseEntity.ok(mensagem);
         } catch (Exception e) {
-            return new ResponseEntity<>("Erro: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

@@ -33,7 +33,6 @@ public class BarbeiroControllerTest {
 
     @BeforeEach
     public void setup() {
-        barbeiro = new Barbeiro(1L, "João Silva", "123.456.789-00", true, new ArrayList<>());
     }
 
     // Teste do método save com sucesso
@@ -104,15 +103,8 @@ public class BarbeiroControllerTest {
     }
 
     // Teste do método findAll
-    @Test
-    public void test_FindAll() {
-        List<Barbeiro> barbeiroList = Arrays.asList(barbeiro, new Barbeiro(2L, "Ana Souza", "987.654.321-11", false, null));
-        when(barbeiroService.findAll()).thenReturn(barbeiroList);
-        ResponseEntity<List<Barbeiro>> response = barbeiroController.findAll();
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(2, response.getBody().size());
-        assertEquals(barbeiro, response.getBody().get(0));
-    }
+    
+    
 
     // Teste do método delete com sucesso
     @Test

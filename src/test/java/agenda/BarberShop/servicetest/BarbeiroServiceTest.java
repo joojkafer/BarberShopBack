@@ -37,7 +37,6 @@ public class BarbeiroServiceTest {
         barbeiroMock.setNome("João");
         barbeiroMock.setCpf("12345678900");
         barbeiroMock.setStatus(true);
-        barbeiroMock.setAgendamentos(null);
     }
 
     @Test

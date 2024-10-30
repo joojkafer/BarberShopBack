@@ -177,7 +177,6 @@ public class AgendamentoServiceTest {
     private Agendamento criarAgendamentoMock() {
         Agendamento agendamento = new Agendamento();
         agendamento.setCliente(new Cliente(1L, "Cliente", "123.456.789-10", "123456789", new ArrayList<>()));
-        agendamento.setBarbeiro(new Barbeiro(1L, "Barbeiro", "987.654.321-00", true, new ArrayList<>()));
         agendamento.setFuncionario(new Funcionario(1L, null, "Funcionario", "login", "senha", null));
         agendamento.setHorariosAgendamento(LocalDateTime.now().plusHours(25));
         agendamento.setServicos(List.of(new Servico(1L, "Corte", null, 30.0)));
