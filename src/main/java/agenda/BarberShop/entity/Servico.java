@@ -1,3 +1,4 @@
+// Servico.java (Entidade)
 package agenda.BarberShop.entity;
 
 import jakarta.persistence.Entity;
@@ -29,8 +30,4 @@ public class Servico {
 
     @NotNull(message = "O valor do serviço não pode ser nulo.")
     private Double valor;
-
-    public Double getValor() {
-        return valor;
-    }
 }

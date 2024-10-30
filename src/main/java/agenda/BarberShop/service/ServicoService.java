@@ -2,10 +2,8 @@ package agenda.BarberShop.service;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import agenda.BarberShop.entity.Servico;
 import agenda.BarberShop.repository.ServicoRepository;
 
@@ -18,6 +16,12 @@ public class ServicoService {
     public String save(Servico servico) throws Exception {
         if (servico.getNome() == null || servico.getNome().isEmpty()) {
             throw new Exception("O nome do serviço não pode ser nulo.");
+        }
+        if (servico.getDescricao() == null || servico.getDescricao().isEmpty()) {
+            throw new Exception("A descrição do serviço não pode ser nula.");
+        }
+        if (servico.getValor() == null || servico.getValor() <= 0) {
+            throw new Exception("O valor do serviço deve ser maior que zero.");
         }
         servicoRepository.save(servico);
         return "Serviço salvo com sucesso!";

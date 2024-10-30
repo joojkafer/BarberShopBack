@@ -1,3 +1,4 @@
+// FuncionarioService.java
 package agenda.BarberShop.service;
 
 import java.util.List;
@@ -27,6 +28,9 @@ public class FuncionarioService {
             existingFuncionario.setNome(funcionario.getNome());
             existingFuncionario.setLogin(funcionario.getLogin());
             existingFuncionario.setRole(funcionario.getRole());
+            if (funcionario.getSenha() != null && !funcionario.getSenha().isEmpty()) {
+                existingFuncionario.setSenha(funcionario.getSenha());
+            }
             funcionarioRepository.save(existingFuncionario);
             return "Funcionário atualizado com sucesso!";
         } else {

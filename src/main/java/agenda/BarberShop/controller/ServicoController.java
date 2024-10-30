@@ -1,9 +1,9 @@
+// ServicoController.java
 package agenda.BarberShop.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatus;  
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,10 +15,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import agenda.BarberShop.entity.Servico;
 import agenda.BarberShop.service.ServicoService;
-
 
 @Validated
 @RestController
@@ -35,7 +33,7 @@ public class ServicoController {
             String mensagem = servicoService.save(servico);
             return new ResponseEntity<>(mensagem, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>("Erro: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Erro ao salvar serviço: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -45,7 +43,7 @@ public class ServicoController {
             String mensagem = servicoService.update(servico, id);
             return new ResponseEntity<>(mensagem, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>("Erro: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Erro ao atualizar serviço: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -75,7 +73,7 @@ public class ServicoController {
             String mensagem = servicoService.delete(id);
             return new ResponseEntity<>(mensagem, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Erro ao excluir serviço: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

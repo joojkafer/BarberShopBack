@@ -1,3 +1,4 @@
+// Funcionario.java (Entity)
 package agenda.BarberShop.entity;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class Funcionario {
     @NotBlank(message = "O login não pode ser vazio.")
     private String login;
 
-    @JsonIgnore
+    @JsonIgnore // Evita expor a senha nas respostas
     @NotBlank(message = "A senha não pode ser vazia.")
     private String senha;
 

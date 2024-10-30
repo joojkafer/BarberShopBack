@@ -1,6 +1,7 @@
 package agenda.BarberShop.entity;
 
 public enum Role {
+    ADM,
     ATENDENTE,
-    ADM;
+    ADMIN // Adicione esta linha para aceitar "ADMIN" no JSON
 }

@@ -1,3 +1,4 @@
+// FuncionarioController.java
 package agenda.BarberShop.controller;
 
 import java.util.List;
@@ -20,7 +21,6 @@ import agenda.BarberShop.entity.Funcionario;
 import agenda.BarberShop.service.FuncionarioService;
 import jakarta.validation.Valid;
 
-
 @Validated
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -34,14 +34,14 @@ public class FuncionarioController {
     public ResponseEntity<String> save(@Valid @RequestBody Funcionario funcionario) {
         try {
             String mensagem = funcionarioService.save(funcionario);
-            return new ResponseEntity<>(mensagem, HttpStatus.OK);
+            return new ResponseEntity<>(mensagem, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>("Erro: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> update(@RequestBody Funcionario funcionario, @PathVariable long id) {
+    public ResponseEntity<String> update(@Valid @RequestBody Funcionario funcionario, @PathVariable long id) {
         try {
             String mensagem = funcionarioService.update(funcionario, id);
             return new ResponseEntity<>(mensagem, HttpStatus.OK);
@@ -54,9 +54,10 @@ public class FuncionarioController {
     public ResponseEntity<Funcionario> findById(@PathVariable long id) {
         try {
             Funcionario funcionario = funcionarioService.findById(id);
+            funcionario.setSenha(null); // Remover senha da resposta
             return new ResponseEntity<>(funcionario, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -64,6 +65,7 @@ public class FuncionarioController {
     public ResponseEntity<List<Funcionario>> findAll() {
         try {
             List<Funcionario> lista = funcionarioService.findAll();
+            lista.forEach(func -> func.setSenha(null)); // Remover senha de cada funcionário na resposta
             return new ResponseEntity<>(lista, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -76,7 +78,7 @@ public class FuncionarioController {
             String mensagem = funcionarioService.delete(id);
             return new ResponseEntity<>(mensagem, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Erro: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }
