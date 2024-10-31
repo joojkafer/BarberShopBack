@@ -20,7 +20,7 @@ import agenda.BarberShop.service.ServicoService;
 
 @Validated
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RequestMapping("/servico")
 public class ServicoController {
 

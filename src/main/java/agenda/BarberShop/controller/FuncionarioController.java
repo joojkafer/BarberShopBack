@@ -1,4 +1,3 @@
-// FuncionarioController.java
 package agenda.BarberShop.controller;
 
 import java.util.List;
@@ -23,7 +22,7 @@ import jakarta.validation.Valid;
 
 @Validated
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RequestMapping("/funcionario")
 public class FuncionarioController {
 
@@ -65,7 +64,7 @@ public class FuncionarioController {
     public ResponseEntity<List<Funcionario>> findAll() {
         try {
             List<Funcionario> lista = funcionarioService.findAll();
-            lista.forEach(func -> func.setSenha(null)); // Remover senha de cada funcionário na resposta
+            lista.forEach(func -> func.setSenha(null));
             return new ResponseEntity<>(lista, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

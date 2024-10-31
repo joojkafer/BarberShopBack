@@ -23,7 +23,7 @@ import jakarta.validation.Valid;
 @Validated
 @RestController
 @RequestMapping("/api/barbeiro")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class BarbeiroController {
 
     @Autowired

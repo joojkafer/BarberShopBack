@@ -21,7 +21,7 @@ import agenda.BarberShop.service.ClienteService;
 
 @Validated
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RequestMapping("/cliente")
 public class ClienteController {
 
