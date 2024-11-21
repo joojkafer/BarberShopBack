@@ -1,4 +1,3 @@
-// Servico.java (Entidade)
 package agenda.BarberShop.entity;
 
 import jakarta.persistence.Entity;

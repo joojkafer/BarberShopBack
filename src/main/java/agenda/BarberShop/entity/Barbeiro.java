@@ -20,10 +20,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-//src/main/java/agenda/BarberShop/entity/Barbeiro.java
-
-//src/main/java/agenda/BarberShop/entity/Barbeiro.java
-
 @Entity
 @Getter
 @Setter

@@ -1,4 +1,3 @@
-// Funcionario.java (Entity)
 package agenda.BarberShop.entity;
 
 import java.util.List;
