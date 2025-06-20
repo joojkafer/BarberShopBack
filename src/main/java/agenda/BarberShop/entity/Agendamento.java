@@ -71,6 +71,16 @@ public class Agendamento {
     @JsonIgnoreProperties("agendamentos")
     private List<Servico> servicos;
     
+	//Audith changes
+    @CreatedDate
+    private LocalDateTime createDate;
+    @LastModifiedDate
+    private LocalDateTime lastModified;
+    @CreatedBy
+    private String createdBy;
+    @LastModifiedBy
+    private String modifiedBy;
+    
   public long getIdAgendamento() {
 		return idAgendamento;
 	}
@@ -113,14 +123,28 @@ public class Agendamento {
 	public void setServicos(List<Servico> servicos) {
 		this.servicos = servicos;
 	}
-	
-	//Audith changes
-    @CreatedDate
-    private LocalDateTime createDate;
-    @LastModifiedDate
-    private LocalDateTime lastModified;
-    @CreatedBy
-    private String createdBy;
-    @LastModifiedBy
-    private String modifiedBy;
+	public LocalDateTime getCreateDate() {
+		return createDate;
+	}
+	public void setCreateDate(LocalDateTime createDate) {
+		this.createDate = createDate;
+	}
+	public LocalDateTime getLastModified() {
+		return lastModified;
+	}
+	public void setLastModified(LocalDateTime lastModified) {
+		this.lastModified = lastModified;
+	}
+	public String getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
 }

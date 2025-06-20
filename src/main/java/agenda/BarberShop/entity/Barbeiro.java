@@ -36,19 +36,29 @@ import lombok.Setter;
 @EntityListeners(AuditingEntityListener.class)
 public class Barbeiro {
 
- @Id
- @GeneratedValue(strategy = GenerationType.IDENTITY)
- private long idBarbeiro;
-
- @NotBlank(message = "O nome não pode ser vazio.")
- @Pattern(regexp = "^[\\p{L}]+(?:\\s+[\\p{L}]+)+$", message = "O nome deve conter pelo menos duas palavras.")
- private String nome;
-
- @CPF(message = "O CPF deve seguir o padrão XXX.XXX.XXX-XX")
- private String cpf;
-
- @NotNull(message = "O status não pode ser nulo.")
- private Boolean status;
+	 @Id
+	 @GeneratedValue(strategy = GenerationType.IDENTITY)
+	 private long idBarbeiro;
+	
+	 @NotBlank(message = "O nome não pode ser vazio.")
+	 @Pattern(regexp = "^[\\p{L}]+(?:\\s+[\\p{L}]+)+$", message = "O nome deve conter pelo menos duas palavras.")
+	 private String nome;
+	
+	 @CPF(message = "O CPF deve seguir o padrão XXX.XXX.XXX-XX")
+	 private String cpf;
+	
+	 @NotNull(message = "O status não pode ser nulo.")
+	 private Boolean status;
+	 
+	 //Audith changes
+	 @CreatedDate
+	 private LocalDateTime createDate;
+	 @LastModifiedDate
+	 private LocalDateTime lastModified;
+	 @CreatedBy
+	 private String createdBy;
+	 @LastModifiedBy
+	 private String modifiedBy;
  
 	public long getIdBarbeiro() {
 		return idBarbeiro;
@@ -74,19 +84,28 @@ public class Barbeiro {
 	 public void setStatus(Boolean status) {
 		this.status = status;
 	 }
-	 
- //Audith changes
- @CreatedDate
- private LocalDateTime createDate;
- @LastModifiedDate
- private LocalDateTime lastModified;
- @CreatedBy
- private String createdBy;
- @LastModifiedBy
- private String modifiedBy;
-
- // Remova ou comente os campos relacionados a Agendamento
- // @OneToMany(mappedBy = "barbeiro")
- // @JsonIgnoreProperties("barbeiro")
- // private List<Agendamento> agendamentos;
+	 public LocalDateTime getCreateDate() {
+		 return createDate;
+	 }
+	 public void setCreateDate(LocalDateTime createDate) {
+		 this.createDate = createDate;
+	 }
+	 public LocalDateTime getLastModified() {
+		 return lastModified;
+	 }
+	 public void setLastModified(LocalDateTime lastModified) {
+		 this.lastModified = lastModified;
+	 }
+	 public String getCreatedBy() {
+		 return createdBy;
+	 }
+	 public void setCreatedBy(String createdBy) {
+		 this.createdBy = createdBy;
+	 }
+	 public String getModifiedBy() {
+		 return modifiedBy;
+	 }
+	 public void setModifiedBy(String modifiedBy) {
+		 this.modifiedBy = modifiedBy;
+	 }
 }

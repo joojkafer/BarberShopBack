@@ -37,6 +37,41 @@ import lombok.Setter;
 @EntityListeners(AuditingEntityListener.class)
 public class Funcionario {
 
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long idUsuario;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @NotBlank(message = "O nome não pode ser vazio.")
+    @Pattern(regexp = "^[\\p{L}]+(?:\\s+[\\p{L}]+)+$", message = "O nome deve conter pelo menos duas palavras.")
+    private String nome;
+
+    @NotBlank(message = "O login não pode ser vazio.")
+    private String login;
+
+    @NotBlank(message = "A senha não pode ser vazia.")
+    private String senha;
+
+    @OneToMany(mappedBy = "funcionario")
+    @JsonIgnoreProperties("funcionario")
+    private List<Agendamento> agendamentos;
+
+    public void setIdFuncionario(long id) {
+        this.idUsuario = id;
+    }
+    
+  //Audith changes
+    @CreatedDate
+    private LocalDateTime createDate;
+    @LastModifiedDate
+    private LocalDateTime lastModified;
+    @CreatedBy
+    private String createdBy;
+    @LastModifiedBy
+    private String modifiedBy;
+    
     public long getIdUsuario() {
 		return idUsuario;
 	}
@@ -73,39 +108,28 @@ public class Funcionario {
 	public void setAgendamentos(List<Agendamento> agendamentos) {
 		this.agendamentos = agendamentos;
 	}
-
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idUsuario;
-
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
-    @NotBlank(message = "O nome não pode ser vazio.")
-    @Pattern(regexp = "^[\\p{L}]+(?:\\s+[\\p{L}]+)+$", message = "O nome deve conter pelo menos duas palavras.")
-    private String nome;
-
-    @NotBlank(message = "O login não pode ser vazio.")
-    private String login;
-
-    @NotBlank(message = "A senha não pode ser vazia.")
-    private String senha;
-
-    @OneToMany(mappedBy = "funcionario")
-    @JsonIgnoreProperties("funcionario")
-    private List<Agendamento> agendamentos;
-
-    public void setIdFuncionario(long id) {
-        this.idUsuario = id;
-    }
-    
-  //Audith changes
-    @CreatedDate
-    private LocalDateTime createDate;
-    @LastModifiedDate
-    private LocalDateTime lastModified;
-    @CreatedBy
-    private String createdBy;
-    @LastModifiedBy
-    private String modifiedBy;
+	public LocalDateTime getCreateDate() {
+		return createDate;
+	}
+	public void setCreateDate(LocalDateTime createDate) {
+		this.createDate = createDate;
+	}
+	public LocalDateTime getLastModified() {
+		return lastModified;
+	}
+	public void setLastModified(LocalDateTime lastModified) {
+		this.lastModified = lastModified;
+	}
+	public String getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
 }
