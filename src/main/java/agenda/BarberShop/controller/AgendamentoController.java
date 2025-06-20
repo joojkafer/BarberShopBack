@@ -17,7 +17,7 @@ import jakarta.validation.Valid;
 @Validated
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/agendamento")
+@RequestMapping("/api/agendamento")
 public class AgendamentoController {
 
     @Autowired

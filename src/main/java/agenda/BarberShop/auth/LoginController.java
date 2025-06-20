@@ -19,9 +19,9 @@ public class LoginController {
 	private LoginService loginService;
 
 	@PostMapping
-	public ResponseEntity<String> logar(@RequestBody Login login) {
+	public ResponseEntity<String> logar(@RequestBody loginDto login) {
 		try {
-			return ResponseEntity.ok(loginService.logar(login));
+			return loginService.logar(login);
 		}catch(AuthenticationException ex) {
 			System.out.println(ex.getMessage());
 			return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);

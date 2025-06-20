@@ -23,7 +23,7 @@ import agenda.BarberShop.service.ClienteService;
 @Validated
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/cliente")
+@RequestMapping("/api/cliente")
 public class ClienteController {
 
     @Autowired

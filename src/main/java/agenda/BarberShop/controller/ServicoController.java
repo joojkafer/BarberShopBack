@@ -22,7 +22,7 @@ import agenda.BarberShop.service.ServicoService;
 @Validated
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/servico")
+@RequestMapping("/api/servico")
 public class ServicoController {
 
     @Autowired
