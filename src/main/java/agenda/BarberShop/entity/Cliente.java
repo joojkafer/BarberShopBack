@@ -52,7 +52,37 @@ public class Cliente {
     @JsonIgnoreProperties("cliente")
     private List<Agendamento> agendamentos;
     
-  //Audith changes
+  public long getIdCliente() {
+		return idCliente;
+	}
+	public void setIdCliente(long idCliente) {
+		this.idCliente = idCliente;
+	}
+	public String getNome() {
+		return nome;
+	}
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+	public String getCpf() {
+		return cpf;
+	}
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+	public String getTelefone() {
+		return telefone;
+	}
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+	public List<Agendamento> getAgendamentos() {
+		return agendamentos;
+	}
+	public void setAgendamentos(List<Agendamento> agendamentos) {
+		this.agendamentos = agendamentos;
+	}
+	//Audith changes
     @CreatedDate
     private LocalDateTime createDate;
     @LastModifiedDate
