@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -11,8 +13,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
@@ -27,15 +31,52 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+//@EnableJpaAuditing
 public class SecurityConfig {
 
     @Value("${keycloak.auth-server-url}")
     private String keycloakServerUrl;
+    
+    //Audith ass shi'
+    @Configuration
+    @EnableJpaAuditing(auditorAwareRef = "auditorProvider")
+    public class JpaConfig {
+        
+        @Bean
+        public AuditorAware<String> auditorProvider() {
+            return new AuditorAwareImpl(); // definiremos essa classe abaixo
+        }
+    }
+    
+    ////Audith ass shi' 2
+    public class AuditorAwareImpl implements AuditorAware<String> {
+
+        @Override
+        public Optional<String> getCurrentAuditor() {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+            if (authentication == null || !authentication.isAuthenticated()) {
+                return Optional.empty();
+            }
+
+            // Se o principal for um token JWT (esperado com Keycloak)
+            if (authentication.getPrincipal() instanceof Jwt jwt) {
+                String username = jwt.getClaimAsString("preferred_username");
+                return Optional.ofNullable(username);
+            }
+
+            // Fallback: autenticação não é JWT
+            System.out.println("⚠️ Fallback em AuditorAwareImpl: autenticação não é do tipo JWT");
+            return Optional.of(authentication.getName());
+        }
+    }
+    
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

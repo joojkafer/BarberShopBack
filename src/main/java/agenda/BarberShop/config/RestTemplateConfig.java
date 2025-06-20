@@ -2,6 +2,7 @@ package agenda.BarberShop.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.web.client.RestTemplate;
 
 import javax.net.ssl.*;
@@ -10,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 
 @Configuration // Indica que é uma classe de configuração do Spring
-
+//@EnableJpaAuditing
 public class RestTemplateConfig {
 
     @Bean(name = "sslRestTemplate")

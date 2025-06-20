@@ -3,9 +3,14 @@ package agenda.BarberShop.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,6 +31,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+//Audith changes
+@EntityListeners(AuditingEntityListener.class)
 public class Agendamento {
 
     @Id
@@ -61,4 +68,10 @@ public class Agendamento {
     )
     @JsonIgnoreProperties("agendamentos")
     private List<Servico> servicos;
+    
+    //Audith changes
+    @CreatedDate
+    private LocalDateTime createDate;
+    @LastModifiedDate
+    private LocalDateTime lastModified;
 }

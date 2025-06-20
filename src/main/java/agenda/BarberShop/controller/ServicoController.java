@@ -34,6 +34,7 @@ public class ServicoController {
             String mensagem = servicoService.save(servico);
             return new ResponseEntity<>(mensagem, HttpStatus.OK);
         } catch (Exception e) {
+        	e.printStackTrace();
             return new ResponseEntity<>("Erro ao salvar serviço: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }

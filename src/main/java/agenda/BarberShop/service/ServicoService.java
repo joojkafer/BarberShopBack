@@ -20,7 +20,8 @@ public class ServicoService {
         if (servico.getDescricao() == null || servico.getDescricao().isEmpty()) {
             throw new Exception("A descrição do serviço não pode ser nula.");
         }
-        if (servico.getValor() == null || servico.getValor() <= 0) {
+        Double valor = servico.getValor();
+        if (valor == null || valor <= 0) {
             throw new Exception("O valor do serviço deve ser maior que zero.");
         }
         servicoRepository.save(servico);
