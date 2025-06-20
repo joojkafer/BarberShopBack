@@ -1,13 +1,21 @@
 package agenda.BarberShop.entity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.validation.constraints.Pattern;
+
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -25,6 +33,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+//Audith changes
+@EntityListeners(AuditingEntityListener.class)
 public class Funcionario {
 
     @Id
@@ -51,4 +61,14 @@ public class Funcionario {
     public void setIdFuncionario(long id) {
         this.idUsuario = id;
     }
+    
+  //Audith changes
+    @CreatedDate
+    private LocalDateTime createDate;
+    @LastModifiedDate
+    private LocalDateTime lastModified;
+    @CreatedBy
+    private String createdBy;
+    @LastModifiedBy
+    private String modifiedBy;
 }

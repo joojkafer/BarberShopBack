@@ -3,7 +3,9 @@ package agenda.BarberShop.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -69,9 +71,13 @@ public class Agendamento {
     @JsonIgnoreProperties("agendamentos")
     private List<Servico> servicos;
     
-    //Audith changes
+  //Audith changes
     @CreatedDate
     private LocalDateTime createDate;
     @LastModifiedDate
     private LocalDateTime lastModified;
+    @CreatedBy
+    private String createdBy;
+    @LastModifiedBy
+    private String modifiedBy;
 }
