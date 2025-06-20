@@ -50,7 +50,32 @@ public class Barbeiro {
  @NotNull(message = "O status não pode ser nulo.")
  private Boolean status;
  
-//Audith changes
+	public long getIdBarbeiro() {
+		return idBarbeiro;
+	}
+	 public void setIdBarbeiro(long idBarbeiro) {
+		this.idBarbeiro = idBarbeiro;
+	 }
+	 public String getNome() {
+		return nome;
+	 }
+	 public void setNome(String nome) {
+		this.nome = nome;
+	 }
+	 public String getCpf() {
+		return cpf;
+	 }
+	 public void setCpf(String cpf) {
+		this.cpf = cpf;
+	 }
+	 public Boolean getStatus() {
+		return status;
+	 }
+	 public void setStatus(Boolean status) {
+		this.status = status;
+	 }
+	 
+ //Audith changes
  @CreatedDate
  private LocalDateTime createDate;
  @LastModifiedDate
