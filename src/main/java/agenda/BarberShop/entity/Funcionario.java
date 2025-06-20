@@ -37,7 +37,44 @@ import lombok.Setter;
 @EntityListeners(AuditingEntityListener.class)
 public class Funcionario {
 
-    @Id
+    public long getIdUsuario() {
+		return idUsuario;
+	}
+	public void setIdUsuario(long idUsuario) {
+		this.idUsuario = idUsuario;
+	}
+	public Role getRole() {
+		return role;
+	}
+	public void setRole(Role role) {
+		this.role = role;
+	}
+	public String getNome() {
+		return nome;
+	}
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+	public String getLogin() {
+		return login;
+	}
+	public void setLogin(String login) {
+		this.login = login;
+	}
+	public String getSenha() {
+		return senha;
+	}
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+	public List<Agendamento> getAgendamentos() {
+		return agendamentos;
+	}
+	public void setAgendamentos(List<Agendamento> agendamentos) {
+		this.agendamentos = agendamentos;
+	}
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idUsuario;
 
