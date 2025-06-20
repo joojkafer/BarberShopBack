@@ -71,7 +71,50 @@ public class Agendamento {
     @JsonIgnoreProperties("agendamentos")
     private List<Servico> servicos;
     
-  //Audith changes
+  public long getIdAgendamento() {
+		return idAgendamento;
+	}
+	public void setIdAgendamento(long idAgendamento) {
+		this.idAgendamento = idAgendamento;
+	}
+	public LocalDateTime getHorariosAgendamento() {
+		return horariosAgendamento;
+	}
+	public void setHorariosAgendamento(LocalDateTime horariosAgendamento) {
+		this.horariosAgendamento = horariosAgendamento;
+	}
+	public double getValorTotal() {
+		return valorTotal;
+	}
+	public void setValorTotal(double valorTotal) {
+		this.valorTotal = valorTotal;
+	}
+	public Cliente getCliente() {
+		return cliente;
+	}
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+	public Barbeiro getBarbeiro() {
+		return barbeiro;
+	}
+	public void setBarbeiro(Barbeiro barbeiro) {
+		this.barbeiro = barbeiro;
+	}
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
+	}
+	public List<Servico> getServicos() {
+		return servicos;
+	}
+	public void setServicos(List<Servico> servicos) {
+		this.servicos = servicos;
+	}
+	
+	//Audith changes
     @CreatedDate
     private LocalDateTime createDate;
     @LastModifiedDate
